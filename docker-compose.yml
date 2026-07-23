@@ -1,0 +1,67 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: medusa_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: medusa-store
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - medusa_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: medusa_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - medusa_network
+
+  medusa-backend:
+    build: ./medusa-backend
+    container_name: medusa_backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "9000:9000"
+      - "7001:7001"
+      - "5173:5173"
+    env_file:
+      - ./medusa-backend/.env
+    volumes:
+      - ./medusa-backend:/server
+      - /server/node_modules
+    networks:
+      - medusa_network
+
+  nuxt-storefront:
+    build: ./nuxt-storefront
+    container_name: nuxt_storefront
+    restart: unless-stopped
+    depends_on:
+      - medusa-backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./nuxt-storefront/.env
+    volumes:
+      - ./nuxt-storefront:/app
+      - /app/node_modules
+      - /app/.nuxt
+    networks:
+      - medusa_network
+
+volumes:
+  postgres_data:
+
+networks:
+  medusa_network:
+    driver: bridge
