@@ -31,3 +31,4 @@ logs
 .cursorignore
 
 Credentials.txt
+.env untuk prod
