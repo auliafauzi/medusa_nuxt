@@ -1,0 +1,33 @@
+# ===== Stage 1: Build =====
+FROM node:20-alpine AS builder
+
+WORKDIR /server
+
+RUN npm install -g pnpm@10
+
+COPY package.json ./
+COPY .npmrc ./
+RUN pnpm install
+
+COPY . .
+
+RUN pnpm medusa build
+
+# ===== Stage 2: Production runner =====
+FROM node:20-alpine AS runner
+
+WORKDIR /server
+
+RUN npm install -g pnpm@10
+
+# Copy hasil build (server siap-pakai) dari stage builder
+COPY --from=builder /server/.medusa/server ./
+
+# Copy .env (akan di-mount/override lewat env_file di docker-compose.prod.yml)
+COPY --from=builder /server/.npmrc ./
+
+RUN pnpm install --prod
+
+EXPOSE 9000
+
+CMD ["pnpm", "start"]
