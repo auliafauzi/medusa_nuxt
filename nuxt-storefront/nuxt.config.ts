@@ -49,16 +49,25 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-06',
   hooks: {
     async 'prerender:routes'(ctx) {
-      const { regions } = await fetch(`${process.env.NUXT_PUBLIC_MEDUSA_BACKEND_URL}/store/regions`, {
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-publishable-api-key': process.env.NUXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || '',
-        },
-      }).then(res => res.json())
-      const countries = regions?.map((region: StoreRegion) => region.countries).flat()
-      for (const country of countries) {
-        ctx.routes.add(`/${country.iso_2}`)
+      if (!process.env.NUXT_PUBLIC_MEDUSA_BACKEND_URL) {
+        console.warn('[prerender:routes] NUXT_PUBLIC_MEDUSA_BACKEND_URL not set, skipping per-country prerender.')
+        return
+      }
+      try {
+        const { regions } = await fetch(`${process.env.NUXT_PUBLIC_MEDUSA_BACKEND_URL}/store/regions`, {
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-publishable-api-key': process.env.NUXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || '',
+          },
+        }).then(res => res.json())
+        const countries = regions?.map((region: StoreRegion) => region.countries).flat()
+        for (const country of countries) {
+          ctx.routes.add(`/${country.iso_2}`)
+        }
+      }
+      catch (err) {
+        console.warn('[prerender:routes] Backend unreachable during build, skipping per-country prerender:', (err as Error).message)
       }
     },
   },
