@@ -20,7 +20,7 @@ const isSideMenuOpen = ref(false)
           class="h-full flex items-center justify-center"
         >
           <img 
-            :src="theme.brand.logo" 
+            :src="assetUrl(theme.brand.logo)" 
             :alt="theme.brand.logoAlt" 
             class="h-16 w-auto"
           />

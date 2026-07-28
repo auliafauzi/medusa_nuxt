@@ -6,7 +6,7 @@ import { theme } from '~/config/theme'
   <footer class="flex flex-col gap-y-6 sm:flex-row items-start justify-between py-40">
     <AppLink to="/" class="flex items-center">
       <img
-        :src="theme.brand.logo"
+        :src="assetUrl(theme.brand.logo)"
         :alt="theme.brand.logoAlt"
         class="h-42 w-auto"
       />

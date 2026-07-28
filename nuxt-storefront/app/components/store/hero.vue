@@ -48,7 +48,7 @@ onUnmounted(() => {
         class="w-full h-full flex-shrink-0 relative"
       >
         <img
-          :src="banner"
+          :src="assetUrl(banner)"
           :alt="'Banner ' + (index + 1)"
           class="w-full h-full object-cover"
         />
