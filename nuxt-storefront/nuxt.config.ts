@@ -14,7 +14,6 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/image',
     '@nuxt/eslint',
-    '@nuxthub/core',
   ],
   devtools: { enabled: true },
   app: {
@@ -31,7 +30,7 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
-    '/**/': { prerender: true },
+    '/**/': { prerender: false },
     '/**/products/**': { ssr: true },
     '/**/collections/**': { ssr: true },
     '/**/categories/**': { ssr: true },
@@ -47,6 +46,9 @@ export default defineNuxtConfig({
     payloadExtraction: true,
   },
   compatibilityDate: '2024-11-06',
+  nitro: {
+    preset: 'node-server',
+  },
   hooks: {
     async 'prerender:routes'(ctx) {
       if (!process.env.NUXT_PUBLIC_MEDUSA_BACKEND_URL) {

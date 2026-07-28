@@ -13,14 +13,12 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - medusa_network
-
   redis:
     image: redis:7-alpine
     container_name: medusa_redis
     restart: always
     networks:
       - medusa_network
-
   medusa-backend:
     build:
       context: ./medusa-backend
@@ -44,11 +42,14 @@ services:
       NODE_ENV: ${NODE_ENV}
     networks:
       - medusa_network
-
   nuxt-storefront:
     build:
       context: ./nuxt-storefront
       dockerfile: Dockerfile.prod
+      args:
+        NUXT_PUBLIC_MEDUSA_BACKEND_URL: ${NUXT_PUBLIC_MEDUSA_BACKEND_URL}
+        NUXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: ${NUXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY}
+        NUXT_PUBLIC_STRIPE_KEY: ${NUXT_PUBLIC_STRIPE_KEY}
     container_name: nuxt_storefront
     restart: always
     depends_on:
@@ -61,10 +62,8 @@ services:
       NUXT_PUBLIC_STRIPE_KEY: ${NUXT_PUBLIC_STRIPE_KEY}
     networks:
       - medusa_network
-
 volumes:
   postgres_data:
-
 networks:
   medusa_network:
     driver: bridge
