@@ -40,6 +40,8 @@ services:
       AUTH_CORS: ${AUTH_CORS}
       MEDUSA_BACKEND_URL: ${MEDUSA_BACKEND_URL}
       NODE_ENV: ${NODE_ENV}
+    volumes:
+      - medusa_static:/server/static
     networks:
       - medusa_network
   nuxt-storefront:
@@ -64,6 +66,7 @@ services:
       - medusa_network
 volumes:
   postgres_data:
+  medusa_static:
 networks:
   medusa_network:
     driver: bridge
