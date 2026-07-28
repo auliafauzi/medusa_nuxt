@@ -1,5 +1,8 @@
 import type { StoreRegion } from '@medusajs/types'
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+const baseURL = '/demo/store/'
+
 export default defineNuxtConfig({
   vite: {
     server: {
@@ -17,8 +20,13 @@ export default defineNuxtConfig({
   ],
   devtools: { enabled: true },
   app: {
-    baseURL: '/demo/store/',
+    baseURL,
     pageTransition: { name: 'page', mode: 'out-in' },
+    head: {
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: `${baseURL}favicon.ico` },
+      ],
+    },
   },
   css: ['~/assets/css/main.css'],
   ui: {
