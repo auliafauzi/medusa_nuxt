@@ -64,6 +64,26 @@ services:
       NUXT_PUBLIC_STRIPE_KEY: ${NUXT_PUBLIC_STRIPE_KEY}
     networks:
       - medusa_network
+  nuxt-storefront-2:
+    build:
+      context: ./nuxt-storefront-2
+      dockerfile: Dockerfile.prod
+      args:
+        NUXT_PUBLIC_MEDUSA_BACKEND_URL: ${NUXT_PUBLIC_MEDUSA_BACKEND_URL}
+        NUXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: ${NUXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY}
+        NUXT_PUBLIC_STRIPE_KEY: ${NUXT_PUBLIC_STRIPE_KEY}
+    container_name: nuxt_storefront_2
+    restart: always
+    depends_on:
+      - medusa-backend
+    ports:
+      - "3001:3000"
+    environment:
+      NUXT_PUBLIC_MEDUSA_BACKEND_URL: ${NUXT_PUBLIC_MEDUSA_BACKEND_URL}
+      NUXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: ${NUXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY}
+      NUXT_PUBLIC_STRIPE_KEY: ${NUXT_PUBLIC_STRIPE_KEY}
+    networks:
+      - medusa_network
 volumes:
   postgres_data:
   medusa_static:

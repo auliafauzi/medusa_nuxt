@@ -59,6 +59,23 @@ services:
     networks:
       - medusa_network
 
+  nuxt-storefront-2:
+    build: ./nuxt-storefront-2
+    container_name: nuxt_storefront_2
+    restart: unless-stopped
+    depends_on:
+      - medusa-backend
+    ports:
+      - "3001:3000"
+    env_file:
+      - ./nuxt-storefront-2/.env
+    volumes:
+      - ./nuxt-storefront-2:/app
+      - /app/node_modules
+      - /app/.nuxt
+    networks:
+      - medusa_network
+
 volumes:
   postgres_data:
 
