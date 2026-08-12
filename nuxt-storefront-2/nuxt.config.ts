@@ -1,7 +1,7 @@
 import type { StoreRegion } from '@medusajs/types'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-const baseURL = '/store2/'
+const baseURL = '/demo/store2/'
 
 export default defineNuxtConfig({
   vite: {
