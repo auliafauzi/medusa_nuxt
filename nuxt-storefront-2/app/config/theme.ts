@@ -21,7 +21,7 @@ export const theme = {
 
   // Homepage
   homepage: {
-    heroTitle: 'Selamat Datang di Rahasia Fragance',
+    heroTitle: 'Welcome to Rahasia Fragance',
     heroSubtitle: 'Jelajahi aroma eksklusif kami dan temukan keharuman yang memikat.',
     heroImage: '/hero-banner.jpg',
     carouselIntervalMs: 7000,
